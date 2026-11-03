@@ -27,9 +27,9 @@ variable "iam_role_arn" {
   type        = string
 }
 
-variable "environment_variables" {
-  description = "The environment variables of the function."
-  type        = map(string)
+variable "dynamodb_table_name" {
+  description = "The name of the DynamoDB table. The function reads it from the DYNAMODB_TABLE environment variable."
+  type        = string
 }
 
 variable "aws_account_id" {

@@ -1,9 +1,11 @@
 # ---------------------------------------------------------------------------------------------------------------------
 # LAMBDA FUNCTION OF THE STATEFUL LAMBDA SERVICE
-# The `catalog/units/js-lambda-stateful-service` Terragrunt unit uses this module. The stack file sets `iam_role_arn`
-# and `environment_variables`.
+# This module replaces the `units/js-lambda-stateful-service` Terragrunt unit of the catalog. It also contains the
+# `iam_role_arn` and `environment_variables` inputs that the catalog's example stack sets in its `autoinclude` block.
+# The root modules under `<account>/<region>/stateful-lambda-service/service` call it.
 #
-# The handler source is in `src/`. The unit packages it into `zip_file` with a `before_hook`.
+# The handler source is in `src/`. The Terragrunt unit packaged it with a `before_hook`. Here, a `run` step in
+# `.stategraph/config.yml` runs `scripts/package-lambda.py` before each plan and apply, and writes `zip_file`.
 #
 # DEMO STAND-IN: this module does not create a Lambda function. A `terraform_data` resource keeps the function
 # settings and the hash of `zip_file` in the state, and the outputs have the same shape as the outputs of a real
@@ -28,6 +30,8 @@ resource "terraform_data" "function" {
     iam_role_arn     = var.iam_role_arn
     source_code_hash = filebase64sha256(var.zip_file)
 
-    environment_variables = var.environment_variables
+    environment_variables = {
+      DYNAMODB_TABLE = var.dynamodb_table_name
+    }
   }
 }
