@@ -8,6 +8,17 @@ scale with confidence using an `infrastructure-live` repository.
 
 If you have not already done so, you are encouraged to read the [Terragrunt Getting Started Guide](https://terragrunt.gruntwork.io/docs/getting-started/quick-start/) to get familiar with the terminology and concepts used in this repository before proceeding.
 
+> [!IMPORTANT]
+> **Demo version.** This copy of the repository is changed so that it runs on your machine, with no AWS account:
+>
+> - The units and the modules that it uses are copied into this repository (see [`catalog/README.md`](/catalog/README.md)).
+> - The modules are in `modules/stateful-lambda-service/`. Each module has a `terraform_data` resource in place of the AWS resources. Its outputs have the same shape as the outputs of the real resources.
+> - `root.hcl` generates no AWS provider, and keeps the state of each unit in a local `terraform.tfstate` file, in place of an S3 bucket.
+> - The account IDs have defaults, because the modules use them only to make the ARNs.
+> - The stack files give the outputs of `db` and `role` to the units that need them, as the catalog's own example stack does.
+>
+> To run it: `cd non-prod/us-east-1/stateful-lambda-service && terragrunt stack run apply`. The sections below describe the original repository.
+
 ## What is an `infrastructure-live` repository?
 
 An `infrastructure-live` repository is a Gruntwork best practice for managing your "live" infrastructure. That is, the

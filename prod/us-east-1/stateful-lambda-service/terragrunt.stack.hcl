@@ -48,6 +48,14 @@ unit "lambda_service" {
         name = "dynamodb-table"
       }
     }
+
+    inputs = {
+      iam_role_arn = dependency.role.outputs.arn
+
+      environment_variables = {
+        DYNAMODB_TABLE = dependency.dynamodb_table.outputs.name
+      }
+    }
   }
 }
 
@@ -100,6 +108,33 @@ unit "role" {
       mock_outputs = {
         arn = "arn:aws:dynamodb:us-east-1:123456789012:table/example-table"
       }
+    }
+
+    inputs = {
+      policy = jsonencode({
+        Version = "2012-10-17"
+        Statement = [
+          {
+            Action = [
+              "logs:CreateLogGroup",
+              "logs:CreateLogStream",
+              "logs:PutLogEvents"
+            ]
+            Effect   = "Allow"
+            Resource = "arn:aws:logs:*:*:*"
+          },
+          {
+            Action = [
+              "dynamodb:GetItem",
+              "dynamodb:PutItem",
+              "dynamodb:UpdateItem",
+              "dynamodb:DeleteItem"
+            ]
+            Effect   = "Allow"
+            Resource = dependency.dynamodb_table.outputs.arn
+          }
+        ]
+      })
     }
   }
 }

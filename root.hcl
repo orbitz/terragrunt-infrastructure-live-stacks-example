@@ -16,33 +16,20 @@ locals {
   aws_region = local.region_vars.locals.aws_region
 }
 
-# Generate an AWS provider block
-generate "provider" {
-  path      = "provider.tf"
-  if_exists = "overwrite_terragrunt"
-  contents  = <<EOF
-provider "aws" {
-  region = "${local.aws_region}"
-
-  # Only these AWS Account IDs may be operated on by this template
-  allowed_account_ids = ["${local.account_id}"]
-}
-EOF
+# DEMO: the modules use `terraform_data` resources in place of AWS resources, so no AWS provider is generated. The
+# modules use the account ID and the region only to make the ARNs.
+inputs = {
+  aws_account_id = local.account_id
+  aws_region     = local.aws_region
 }
 
-# Configure Terragrunt to automatically store tfstate files in an S3 bucket.
-#
-# The bucket name ends in the account ID, the region, and `-an`, so Terragrunt creates it in the account regional
-# namespace, where only this account can create buckets.
-# https://docs.aws.amazon.com/AmazonS3/latest/userguide/gpbucketnamespaces.html
+# DEMO: keep the state of each unit in a local file, in place of an S3 bucket. The file is
+# `<stack directory>/<unit path>/terraform.tfstate`. The `.terragrunt-stack/` part is removed from the path, so the
+# state is not in the generated directory, and you can delete that directory without losing the state.
 remote_state {
-  backend = "s3"
+  backend = "local"
   config = {
-    encrypt      = true
-    bucket       = "terragrunt-example-tf-state-${local.account_id}-${local.aws_region}-an"
-    key          = "${path_relative_to_include()}/tf.tfstate"
-    region       = local.aws_region
-    use_lockfile = true
+    path = "${get_parent_terragrunt_dir()}/${replace(path_relative_to_include(), ".terragrunt-stack/", "")}/terraform.tfstate"
   }
   generate = {
     path      = "backend.tf"

@@ -3,8 +3,7 @@ include "root" {
 }
 
 terraform {
-  source                 = "../..//modules/lambda-service"
-  update_source_with_cas = true
+  source = "${local.repo_root}/modules/stateful-lambda-service/service"
 
   before_hook "package" {
     commands = ["apply", "plan", "destroy"]
@@ -13,10 +12,12 @@ terraform {
 }
 
 locals {
+  repo_root = dirname(find_in_parent_folders("root.hcl"))
+
   script_dir     = "${get_terragrunt_dir()}/scripts"
   package_script = "${local.script_dir}/package.sh"
 
-  src_dir  = "${get_terragrunt_dir()}/src"
+  src_dir  = "${local.repo_root}/modules/stateful-lambda-service/service/src"
   zip_file = "${get_terragrunt_dir()}/handler.zip"
 
   // Mark the handler source as read so changes to it cascade to this unit

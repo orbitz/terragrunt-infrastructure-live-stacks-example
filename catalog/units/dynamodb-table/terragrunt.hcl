@@ -2,9 +2,12 @@ include "root" {
   path = find_in_parent_folders("root.hcl")
 }
 
+locals {
+  repo_root = dirname(find_in_parent_folders("root.hcl"))
+}
+
 terraform {
-  source                 = "../..//modules/dynamodb-table"
-  update_source_with_cas = true
+  source = "${local.repo_root}/modules/stateful-lambda-service/db"
 }
 
 inputs = {
