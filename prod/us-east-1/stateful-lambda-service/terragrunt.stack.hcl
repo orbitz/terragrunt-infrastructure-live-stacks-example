@@ -9,7 +9,7 @@ unit "lambda_service" {
   //
   // If you are using a private catalog, you may want to use an SSH source URL instead:
   // source = "git::git@github.com:acme/terragrunt-infrastructure-catalog.git//units/lambda-stateful-service"
-  source = "github.com/gruntwork-io/terragrunt-infrastructure-catalog-example//units/js-lambda-stateful-service"
+  source = "../../../catalog//units/js-lambda-stateful-service"
 
   path = "service"
 
@@ -58,7 +58,7 @@ unit "db" {
   //
   // If you are using a private catalog, you may want to use an SSH source URL instead:
   // source = "git::git@github.com:acme/terragrunt-infrastructure-catalog.git//units/dynamodb-table"
-  source = "github.com/gruntwork-io/terragrunt-infrastructure-catalog-example//units/dynamodb-table"
+  source = "../../../catalog//units/dynamodb-table"
 
   path = "db"
 
@@ -80,7 +80,7 @@ unit "role" {
   //
   // If you are using a private catalog, you may want to use an SSH source URL instead:
   // source = "git::git@github.com:acme/terragrunt-infrastructure-catalog.git//units/lambda-iam-role-to-dynamodb"
-  source = "github.com/gruntwork-io/terragrunt-infrastructure-catalog-example//units/lambda-iam-role-to-dynamodb"
+  source = "../../../catalog//units/lambda-iam-role-to-dynamodb"
 
   path = "roles/lambda-iam-role-to-dynamodb"
 
