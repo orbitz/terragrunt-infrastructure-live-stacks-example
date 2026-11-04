@@ -1,6 +1,0 @@
-# Set account-wide variables. These are automatically pulled in by the root root.hcl configuration.
-# DEMO: the account ID has a default, because the demo modules use it only to make the ARNs.
-locals {
-  account_name   = "prod"
-  aws_account_id = get_env("EX_PROD_ACCOUNT_ID", "210987654321")
-}

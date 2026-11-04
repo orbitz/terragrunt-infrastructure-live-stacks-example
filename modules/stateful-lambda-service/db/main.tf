@@ -1,6 +1,7 @@
 # ---------------------------------------------------------------------------------------------------------------------
 # DYNAMODB TABLE FOR THE STATEFUL LAMBDA SERVICE
-# The `catalog/units/dynamodb-table` Terragrunt unit uses this module.
+# This module replaces the `units/dynamodb-table` Terragrunt unit of the catalog. The root modules under
+# `<account>/<region>/stateful-lambda-service/db` call it.
 #
 # DEMO STAND-IN: this module does not create a DynamoDB table. A `terraform_data` resource keeps the table settings
 # in the state, and the outputs have the same shape as the outputs of a real table. Thus the repository plans and

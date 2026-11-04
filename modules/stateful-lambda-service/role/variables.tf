@@ -3,13 +3,8 @@ variable "name" {
   type        = string
 }
 
-variable "assume_role_policy" {
-  description = "The assume role policy of the IAM role."
-  type        = string
-}
-
-variable "policy" {
-  description = "The inline policy of the IAM role."
+variable "dynamodb_table_arn" {
+  description = "The ARN of the DynamoDB table that the Lambda function reads and writes."
   type        = string
 }
 
